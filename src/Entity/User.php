@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -20,13 +21,15 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"customers_read","invoices_read"})
+     * @Groups({"customers_read","invoices_read","invoices_subresource"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     *  @Groups({"customers_read","invoices_read"})
+     * @Groups({"customers_read","invoices_read","invoices_subresource"})
+     * @Assert\NotBlank(message="Champ obligatoire")
+     * @Assert\Email(message="format non valide")
      */
     private $email;
 
@@ -38,18 +41,24 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Champ obligatoire")
+     * @Assert\Length(min=4,minMessage="mot de passe trop court", max=20, maxMessage="mot de passe trop longue")
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
-     *  @Groups({"customers_read","invoices_read"})
+     * @Groups({"customers_read","invoices_read","invoices_subresource"})
+     * @Assert\NotBlank(message="Champ obligatoire")
+     * @Assert\Length(min=4,minMessage="donner trop court", max=20, maxMessage="donner trop longue")
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
-     *  @Groups({"customers_read","invoices_read"})
+     * @Groups({"customers_read","invoices_read","invoices_subresource"})
+     * @Assert\NotBlank(message="Champ obligatoire")
+     * @Assert\Length(min=4,minMessage="donner trop court", max=20, maxMessage="donner trop longue")
      */
     private $lastname;
 

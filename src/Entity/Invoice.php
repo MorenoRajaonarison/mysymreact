@@ -8,17 +8,37 @@ use App\Repository\InvoiceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=InvoiceRepository::class)
  * @ApiResource(
+ *     subresourceOperations={
+ *          "api_customers_invoices_get_subresource"={
+ *              "normalization_context"=
+ *                  {"groups"={"invoices_subresource"}
+ *              }
+ *          }
+ *     },
+ *     itemOperations={"GET","PUT","DELETE","increment"={
+ *          "method"="post",
+ *          "path"= "/invoices/{id}/increment",
+ *          "controller"= "App\Controller\InvoiceIncrementationController",
+ *          "swagger_context"={
+ *              "summary"="Incremente une facture",
+ *              "description"="Incremente le chrono d'une facture"
+ *          }
+ *     }},
  *     attributes={
  *          "pagination_enabled"=true,
  *          "order": {"amount":"desc"}
  *     },
  *     normalizationContext={
  *          "groups"={"invoices_read"}
- *     })
+ *     },
+ *     denormalizationContext={
+ *          "disable_type_enforcement"=true}
+ *     )
  * @ApiFilter(OrderFilter::class,properties={"amount","sentat"})
  */
 class Invoice
@@ -27,37 +47,46 @@ class Invoice
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"invoices_read","customers_read"})
+     * @Groups({"invoices_read","customers_read","invoices_subresource"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"invoices_read","customers_read"})
+     * @Groups({"invoices_read","customers_read","invoices_subresource"})
+     * @Assert\NotBlank(message="Champ obligatoire")
+     * @Assert\Type(type="numeric",message="doit etre un numerique")
      */
     private $amount;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"invoices_read","customers_read"})
+     * @Groups({"invoices_read","customers_read","invoices_subresource"})
+     * @Assert\NotBlank(message="Champ obligatoire")
+     * @Assert\DateTime(message="Format non valide, essayé YYYY-MM-DD")
      */
     private $sentAt;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"invoices_read","customers_read"})
+     * @Groups({"invoices_read","customers_read","invoices_subresource"})
+     * @Assert\NotBlank(message="Champ obligatoire")
+     * @Assert\Choice({"SENT","PAID","CANCELLED"})
      */
     private $status;
 
     /**
      * @ORM\ManyToOne(targetEntity=Customer::class, inversedBy="invoices")
      * @Groups({"invoices_read"})
+     * @Assert\NotBlank(message="Champ obligatoire")
      */
     private $customer;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"invoices_read","customers_read"})
+     * @Groups({"invoices_read","customers_read","invoices_subresource"})
+     * @Assert\NotBlank(message="Champ obligatoire")
+     * @Assert\Type(type="integer",message="format invalide")
      */
     private $chrono;
 
@@ -71,7 +100,7 @@ class Invoice
         return $this->amount;
     }
 
-    public function setAmount(float $amount): self
+    public function setAmount($amount): self
     {
         $this->amount = $amount;
 
@@ -83,7 +112,7 @@ class Invoice
         return $this->sentAt;
     }
 
-    public function setSentAt(\DateTimeInterface $sentAt): self
+    public function setSentAt($sentAt): self
     {
         $this->sentAt = $sentAt;
 
@@ -119,7 +148,7 @@ class Invoice
         return $this->chrono;
     }
 
-    public function setChrono(int $chrono): self
+    public function setChrono($chrono): self
     {
         $this->chrono = $chrono;
 
@@ -128,7 +157,7 @@ class Invoice
 
     /**
      * @return User
-     * @Groups({"invoices_read"})
+     * @Groups({"invoices_read","invoices_subresource"})
      */
     public function getUser() :User
     {
