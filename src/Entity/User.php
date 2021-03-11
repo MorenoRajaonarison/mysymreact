@@ -13,7 +13,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={"groups" = {"users_read"}}
+ * )
  */
 class User implements UserInterface
 {
@@ -27,7 +29,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"customers_read","invoices_read","invoices_subresource"})
+     * @Groups({"customers_read","invoices_read","invoices_subresource","users_read"})
      * @Assert\NotBlank(message="Champ obligatoire")
      * @Assert\Email(message="format non valide")
      */
@@ -48,7 +50,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"customers_read","invoices_read","invoices_subresource"})
+     * @Groups({"customers_read","invoices_read","invoices_subresource","users_read"})
      * @Assert\NotBlank(message="Champ obligatoire")
      * @Assert\Length(min=4,minMessage="donner trop court", max=20, maxMessage="donner trop longue")
      */
@@ -56,7 +58,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"customers_read","invoices_read","invoices_subresource"})
+     * @Groups({"customers_read","invoices_read","invoices_subresource","users_read"})
      * @Assert\NotBlank(message="Champ obligatoire")
      * @Assert\Length(min=4,minMessage="donner trop court", max=20, maxMessage="donner trop longue")
      */
