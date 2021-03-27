@@ -22,7 +22,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *          "groups"={"customers_read"}
  *     },
  *     subresourceOperations={
-            "invoices_get_subresource"={"path"="/customers/{id}/invoices"}
+ *          "invoices_get_subresource"={"path"="/customers/{id}/invoices"}
  *     },
  *     itemOperations={"GET","PUT", "DELETE"},
  *     collectionOperations={"GET", "POST"}

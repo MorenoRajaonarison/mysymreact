@@ -35,7 +35,7 @@ security:
             anonymous: true
             stateless: true
             guard:
-                authenticator:
+                authenticators:
                     -  lexik_jwt_authentication.jwt_token_authenticator
         main:
             anonymous: lazy
@@ -51,7 +51,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/customers, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/customers, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/users, roles: IS_AUTHENTICATED_FULLY , methods: [GET,PUT,DELETE]}
         - { path: ^/api/invoices, roles: IS_AUTHENTICATED_FULLY }
         # - { path: ^/profile, roles: ROLE_USER }
