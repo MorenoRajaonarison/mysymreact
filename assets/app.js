@@ -5,6 +5,7 @@ import Navbar from "./js/components/Navbar"
 import HomePage from "./js/pages/Homepage"
 import { HashRouter, Switch, Route } from 'react-router-dom'
 import CustomerPage from './js/pages/CustomerPage'
+import InvoicesPage from "./js/pages/InvoicesPage"
 
 require("./styles/app.css")
 const App = () => {
@@ -13,6 +14,7 @@ const App = () => {
         <main className="container pt-5">
             <Switch>
                 <Route path='/customers' component={CustomerPage} />
+                <Route path='/invoices' component={InvoicesPage} />
                 <Route path='/' component={HomePage} />
             </Switch>
         </main>
