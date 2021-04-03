@@ -10,14 +10,14 @@ const CustomerPage = props => {
         try {
             const data = await CustomerApi.findAll()
             setCustomers(data)
-        } catch (e) {e => console.log(e.response)}
+        } catch (e) { e => console.log(e.response) }
     }
     useEffect(() => {
         fetchCustomers()
     }, [])
     const handleDelete = async id => {
         const originalCustomers = [...customers]
-        setCustomers(customers.filter(customer.id !== id))
+        setCustomers(customers.filter(customer => customer.id !== id))
         try {
             await CustomerApi.delete(id)
         } catch (e) {
@@ -25,18 +25,18 @@ const CustomerPage = props => {
             console.log(e.response)
         }
     }
-    const handleSearch = ({currentTarget}) => {
+    const handleSearch = ({ currentTarget }) => {
         setSearch(currentTarget.value)
         setCurrentPage(1)
     }
     const handleChangePage = page => setCurrentPage(page)
 
     const filterCustomers = customers.filter(
-    c =>
-        c.firstname.toLowerCase().includes(search.toLowerCase()) ||
-        c.lastname.toLowerCase().includes(search.toLowerCase()) ||
-        c.email.toLowerCase().includes(search.toLowerCase()) ||
-        (c.company && c.company.toLowerCase().includes(search.toLowerCase())))
+        c =>
+            c.firstname.toLowerCase().includes(search.toLowerCase()) ||
+            c.lastname.toLowerCase().includes(search.toLowerCase()) ||
+            c.email.toLowerCase().includes(search.toLowerCase()) ||
+            (c.company && c.company.toLowerCase().includes(search.toLowerCase())))
 
     const paginatedCustomers = Pagination.getData(filterCustomers, currentPage)
 
@@ -44,7 +44,7 @@ const CustomerPage = props => {
         <>
             <h1>Liste des Clients</h1>
 
-            <div className="form-group"><input type="text" onChange={handleSearch} value={search} className="form-control" placeholder="rechercher.."/></div>
+            <div className="form-group"><input type="text" onChange={handleSearch} value={search} className="form-control" placeholder="rechercher.." /></div>
             <table className="table table-hover">
                 <thead>
                     <tr>
@@ -77,10 +77,10 @@ const CustomerPage = props => {
                 </tbody>
             </table>
             {filterCustomers.length > 10 &&
-            <Pagination currentPage={currentPage}
-                        itemsPerPage={10}
-                        length={filterCustomers.length}
-                        onPageChange={handleChangePage}/>
+                <Pagination currentPage={currentPage}
+                    itemsPerPage={10}
+                    length={filterCustomers.length}
+                    onPageChange={handleChangePage} />
             }
         </>
     )

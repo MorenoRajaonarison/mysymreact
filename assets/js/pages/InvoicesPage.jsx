@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react"
 import Pagination from "../components/Pagination"
-import axios from 'axios'
+import moment from "moment"
 import InvoicesApi from "../services/InvoicesApi"
 
 const status_class = {
@@ -42,6 +42,7 @@ const InvoicesPage = (props) => {
             setInvoices(originalInvoices)
         }
     }
+    const formatDate = str => moment(str).format('DD/MM/YYYY')
     const handleChangePage = page => setCurrentPage(page)
     const filterInvoices = invoices.filter(
         i =>
@@ -69,14 +70,14 @@ const InvoicesPage = (props) => {
                 {paginatedInvoices.map(invoice => <tr key={invoice.id}>
                     <td>{invoice.chrono}</td>
                     <td><a href="">{invoice.customer.firstname} {invoice.customer.lastname}</a></td>
-                    <td className="text-center">{invoice.sentAt}</td>
+                    <td className="text-center">{formatDate(invoice.sentAt)}</td>
                     <td className="text-center">
                         <span className={"badge badge-"+ status_class[invoice.status]}>{status_label[invoice.status]}</span>
                     </td>
                     <td className="text-center">{invoice.amount.toLocaleString()}</td>
                     <td>
-                        <button className="btn btn-sm btn-danger mr-1">Supprimer</button> &nbsp;
-                        <button className="btn btn-sm btn-primary" onClick={()=>handleDelete(invoice.id)}>Editer</button>
+                        <button className="btn btn-sm btn-danger mr-1" onClick={()=>handleDelete(invoice.id)}>Supprimer</button> &nbsp;
+                        <button className="btn btn-sm btn-primary">Editer</button>
                     </td>
                 </tr>)}
                 </tbody>

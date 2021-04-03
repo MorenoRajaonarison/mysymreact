@@ -7,9 +7,9 @@ const findAll = () => {
 }
 const deleteCustomer = id =>{
     return axios
-        .delete("http://localhost:8000/api/customers" + id)
+        .delete("http://localhost:8000/api/customers/" + id)
 }
 export default {
     findAll,
-    delete: deleteCustomer()
+    delete: deleteCustomer
 }
