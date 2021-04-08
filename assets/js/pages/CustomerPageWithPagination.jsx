@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import Pagination from '../components/Pagination'
 
@@ -46,11 +46,13 @@ const CustomerPageWithPagination = props => {
                     <th>Entreprise</th>
                     <th className="text-center">Facture</th>
                     <th className="text-center">Montant total</th>
-                    <th />
+                    <th/>
                 </tr>
                 </thead>
                 <tbody>
-                {loading && <tr><td>Chargement...</td></tr>}
+                {loading && <tr>
+                    <td>Chargement...</td>
+                </tr>}
                 {!loading && customers.map(customer => <tr key={customer.id}>
                     <td>{customer.id}</td>
                     <td><a href="">{customer.firstname} {customer.lastname}</a></td>
@@ -61,13 +63,16 @@ const CustomerPageWithPagination = props => {
                     </td>
                     <td className="text-center">{customer.totalAmount.toLocaleString()} $</td>
                     <td>
-                        <button onClick={() => handleDelete(customer.id)} disabled={customer.invoices.length > 0} className="btn btn-sm btn-danger">supprimer</button>
+                        <button onClick={() => handleDelete(customer.id)} disabled={customer.invoices.length > 0}
+                                className="btn btn-sm btn-danger">supprimer
+                        </button>
                     </td>
                 </tr>)}
 
                 </tbody>
             </table>
-            <Pagination currentPage={currentPage} itemsPerPage={10} length={totalItems} onPageChange={handleChangePage} />
+            <Pagination currentPage={currentPage} itemsPerPage={10} length={totalItems}
+                        onPageChange={handleChangePage}/>
 
         </>
     )

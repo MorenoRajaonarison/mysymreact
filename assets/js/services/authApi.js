@@ -24,7 +24,7 @@ const setup = () => {
     const token = window.localStorage.getItem("authToken")
     if (token) {
         const {exp: expiration} = jwtDecode(token)
-        if (expiration*1000 > new Date().getTime()) {
+        if (expiration * 1000 > new Date().getTime()) {
             setAxiosToken(token)
         }
     }

@@ -10,6 +10,9 @@ import LoginPage from "./js/pages/LoginPage"
 import authApi from "./js/services/authApi"
 import {HashRouter, Route, Switch, withRouter} from 'react-router-dom'
 import PrivateRoute from "./js/components/PrivateRoute";
+import CustomerAddPage from "./js/pages/CustomerAddPage";
+import InvoiceAddPage from "./js/pages/InvoiceAddPage";
+import RegisterPage from "./js/pages/RegisterPage";
 
 require("./styles/app.css")
 
@@ -26,11 +29,16 @@ const App = () => {
                     <NavbarWithRouter/>
                     <main className="container pt-5">
                         <Switch>
+                            <PrivateRoute path="/customers/:id" component={CustomerAddPage}/>
                             <PrivateRoute path="/customers" component={CustomerPage}/>
+                            <PrivateRoute path="/invoices/:id"  component={InvoiceAddPage}/>
                             <PrivateRoute path="/invoices"  component={InvoicesPage}/>
                             <Route
                                 path='/login'
                                 component={LoginPage}/>
+                            <Route
+                                path='/register'
+                                component={RegisterPage}/>
                             <Route
                                 path='/'
                                 component={HomePage} />

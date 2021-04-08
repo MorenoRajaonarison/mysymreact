@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Pagination = ({ currentPage, itemsPerPage, length, onPageChange }) => {
+const Pagination = ({currentPage, itemsPerPage, length, onPageChange}) => {
     const pageCount = Math.ceil(length / itemsPerPage)
     const pages = []
     for (let i = 1; i <= pageCount; i++) {
@@ -9,9 +9,15 @@ const Pagination = ({ currentPage, itemsPerPage, length, onPageChange }) => {
     return (
         <div className="">
             <ul className="pagination pagination-sm">
-                <li className={"page-item" + (currentPage === 1 && " disabled")}><button onClick={() => onPageChange(currentPage - 1)} className="page-link">&laquo;</button></li>
-                {pages.map(page => <li key={page} className={"page-item" + (currentPage === page && " active")}><button onClick={() => onPageChange(page)} className="page-link">{page}</button></li>)}
-                <li className={"page-item" + (currentPage === pageCount && " disabled")}><button onClick={() => onPageChange(currentPage + 1)} className="page-link">&raquo;</button></li>
+                <li className={"page-item" + (currentPage === 1 && " disabled")}>
+                    <button onClick={() => onPageChange(currentPage - 1)} className="page-link">&laquo;</button>
+                </li>
+                {pages.map(page => <li key={page} className={"page-item" + (currentPage === page && " active")}>
+                    <button onClick={() => onPageChange(page)} className="page-link">{page}</button>
+                </li>)}
+                <li className={"page-item" + (currentPage === pageCount && " disabled")}>
+                    <button onClick={() => onPageChange(currentPage + 1)} className="page-link">&raquo;</button>
+                </li>
             </ul>
         </div>
     )

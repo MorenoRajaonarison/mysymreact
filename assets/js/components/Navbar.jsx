@@ -14,7 +14,8 @@ const Navbar = ({history}) => {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <NavLink className="navbar-brand" to="/">SymReact</NavLink>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            <button className="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             </button>
 
@@ -29,19 +30,19 @@ const Navbar = ({history}) => {
                 </ul>
                 <ul className="navbar-nav ml-auto">
                     {(!isAuthenticated && (
-                    <>
+                        <>
+                            <li className="nav-item">
+                                <NavLink to="/login" className="btn btn-outline-success">Connexion</NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink to="/register" className="btn btn-link">Inscription</NavLink>
+                            </li>
+                        </>)) || (
                         <li className="nav-item">
-                            <NavLink to="/login" className="btn btn-outline-success">Connexion</NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink to="/register" className="btn btn-link">Inscription</NavLink>
-                        </li>
-                    </>)) || (
-                    <li className="nav-item">
-                        <button onClick={handleLogout} className="btn btn-outline-danger">
-                            Deconnexion
-                        </button>
-                    </li>)}
+                            <button onClick={handleLogout} className="btn btn-outline-danger">
+                                Deconnexion
+                            </button>
+                        </li>)}
                 </ul>
             </div>
         </nav>
