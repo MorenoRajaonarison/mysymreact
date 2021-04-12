@@ -4,6 +4,8 @@ import moment from "moment"
 import InvoicesApi from "../services/InvoicesApi"
 import {Link} from "react-router-dom";
 import {FaPlusSquare} from "react-icons/fa";
+import {toast} from "react-toastify";
+import TableLoader from "../components/loaders/tableLoader";
 
 const status_class = {
     PAID: "success",
@@ -20,12 +22,15 @@ const InvoicesPage = (props) => {
     const [invoices, setInvoices] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const [search, setSearch] = useState("")
+    const [loading, setLoading] = useState(true);
     const fetchInvoices = async () => {
         try {
             const data = await InvoicesApi.findAll()
             setInvoices(data)
+            setLoading(false)
         } catch (e) {
             console.log(e.response)
+            toast.error('Une erreur est survenue')
         }
     }
 
@@ -43,8 +48,10 @@ const InvoicesPage = (props) => {
         setInvoices(invoices.filter(invoice => invoice.id !== id))
         try {
             await InvoicesApi.delete(id)
+            toast.success('La factures a été bien supprimer')
         } catch (e) {
             console.log(e.response)
+            toast.error('Une erreur est survenue')
             setInvoices(originalInvoices)
         }
     }
@@ -75,10 +82,10 @@ const InvoicesPage = (props) => {
                     <th></th>
                 </tr>
                 </thead>
-                <tbody>
+                {!loading && <tbody>
                 {paginatedInvoices.map(invoice => <tr key={invoice.id}>
                     <td>{invoice.chrono}</td>
-                    <td><a href="">{invoice.customer.firstname} {invoice.customer.lastname}</a></td>
+                    <td><Link to={"/customers/"+invoice.customer.id}>{invoice.customer.firstname} {invoice.customer.lastname}</Link></td>
                     <td className="text-center">{formatDate(invoice.sentAt)}</td>
                     <td className="text-center">
                         <span
@@ -93,8 +100,9 @@ const InvoicesPage = (props) => {
                         <Link to={"/invoices/" + invoice.id} className="btn btn-sm btn-primary">Editer</Link>
                     </td>
                 </tr>)}
-                </tbody>
+                </tbody>}
             </table>
+            {loading && <TableLoader/>}
             <Pagination currentPage={currentPage} itemsPerPage={10} onPageChange={handleChangePage}
                         length={filterInvoices.length}/>
         </>

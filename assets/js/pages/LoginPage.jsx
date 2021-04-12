@@ -2,6 +2,7 @@ import React, {useState, useContext} from 'react'
 import authApi from "../services/authApi";
 import AuthContext from "../context/AuthContext";
 import Field from "../components/forms/field";
+import {toast} from "react-toastify";
 
 const LoginPage = ({history}) => {
     const {setIsAuthenticated} = useContext(AuthContext)
@@ -23,9 +24,11 @@ const LoginPage = ({history}) => {
             await authApi.authenticate(credentials)
             setIsAuthenticated(true)
             setError("")
+            toast.success("Vous etes connecté 🎉")
             history.replace("/customers")
         } catch (e) {
             console.log(e.response)
+            toast.error('Une erreur est survenue')
             setError('Une erreur est survenue')
         }
     }
