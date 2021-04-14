@@ -1,9 +1,10 @@
 import axios from "axios"
 import jwtDecode from "jwt-decode"
+import {LOGIN_API} from "./config";
 
 const authenticate = credentials => {
     return axios
-        .post("http://localhost:8000/api/login_check", credentials)
+        .post(LOGIN_API, credentials)
         .then(resp => resp.data.token)
         .then(token => {
             window.localStorage.setItem("authToken", token)

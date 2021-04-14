@@ -1,24 +1,25 @@
 import axios from 'axios'
+import {INVOICES_API} from "./config";
 
-const findAll = () => axios.get("http://localhost:8000/api/invoices").then(resp => resp.data["hydra:member"])
+const findAll = () => axios.get(INVOICES_API).then(resp => resp.data["hydra:member"])
 
 const deleteInvoice = id => {
     axios
-        .delete("http://localhost:8000/api/invoices/" + id)
+        .delete(INVOICES_API + "/" + id)
 }
 
 const find = id =>
     axios
-        .get("http://localhost:8000/api/invoices/" + id)
+        .get(INVOICES_API + "/" + id)
         .then(response => response.data)
 
 const update = (id, invoice) =>
     axios
-        .put("http://localhost:8000/api/invoices/" + id, {...invoice, customer: `/api/customers/${invoice.customer}`})
+        .put(INVOICES_API + "/" + id, {...invoice, customer: `/api/customers/${invoice.customer}`})
 
 const create = invoice =>
     axios
-        .post("http://localhost:8000/api/invoices", {...invoice, customer: `/api/customers/${invoice.customer}`})
+        .post(INVOICES_API, {...invoice, customer: `/api/customers/${invoice.customer}`})
 
 export default {
     findAll,
